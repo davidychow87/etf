@@ -1,3 +1,3 @@
-# React-Redux-Node-Boilerplate
+# ETF Screener
 
-This react-redux-node-webpack boilerplate is modified from reactGo: https://github.com/reactGo/reactGo.git
+This app screens etfs

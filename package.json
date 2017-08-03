@@ -1,8 +1,7 @@
 {
-  "name": "react-webpack-node",
-  "version": "3.4.1",
-  "description": "Your One-Stop solution for a full-stack app with ES6/ES2015 React.js featuring universal Redux, React Router, React Router Redux Hot reloading, CSS modules, Express 4.x, and multiple ORMs.",
-  "repository": "https://github.com/choonkending/react-webpack-node",
+  "name": "etf",
+  "description": "etf screener",
+  "repository": "https://github.com/davidychow87/etf",
   "main": "index.js",
   "scripts": {
     "sequelize": "node_modules/.bin/sequelize",
@@ -17,8 +16,7 @@
     "test": "mocha ./app/tests/setup.js --compilers css:./app/tests/compilers/css ./app/**/*-test.js",
     "test:watch": "mocha ./app/tests/setup.js --watch --compilers css:./app/tests/compilers/css ./app/**/*-test.js"
   },
-  "author": "Choon Ken Ding",
-  "license": "MIT",
+  "author": "David Chow",
   "devDependencies": {
     "babel-eslint": "^7.2.1",
     "babel-register": "^6.24.0",
