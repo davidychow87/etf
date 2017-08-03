@@ -12,7 +12,7 @@ import fetchDataForRoute from './utils/fetchDataForRoute';
 // server-generated HTML
 const initialState = window.__INITIAL_STATE__;
 
-const store = configureStore(initialState, browserHistory);
+const store = configureStore(browserHistory);
 const history = syncHistoryWithStore(browserHistory, store);
 const routes = createRoutes(store);
 

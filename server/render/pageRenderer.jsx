@@ -16,6 +16,7 @@ const buildPage = ({ componentHTML, initialState, headAssets }) => {
 <!doctype html>
 <html>
   <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css">
     ${headAssets.title.toString()}
     ${headAssets.meta.toString()}
     ${headAssets.link.toString()}
@@ -36,4 +37,3 @@ export default (store, props) => {
   const headAssets = Helmet.renderStatic();
   return buildPage({ componentHTML, initialState, headAssets });
 };
-

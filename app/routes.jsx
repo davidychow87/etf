@@ -1,7 +1,8 @@
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
-import { App } from './pages';
 
+import App from './pages/App';
+import Main from './pages/Main';
 /*
  * @param {Redux Store}
  * We require store as an argument here because we wish to get
@@ -30,6 +31,7 @@ export default (store) => {
   // };
   return (
     <Route path="/" component={App}>
+      <IndexRoute component={Main} />
 
     </Route>
   );

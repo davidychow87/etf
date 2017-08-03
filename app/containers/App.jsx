@@ -12,7 +12,11 @@ export default class App extends Component {
 
   render() {
     return (
-      <div>Hi there this is a test</div>
+      <div>
+        <div>Hi there asd is a test</div>
+        {this.props.children}
+      </div>
+
     );
   }
 

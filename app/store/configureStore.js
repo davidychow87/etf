@@ -11,19 +11,19 @@ import { isClient, isDebug } from '../../config/app';
  *                          while using browserHistory for client-side
  *                          rendering.
  */
-export default function configureStore(initialState, history) {
+export default function configureStore(history) {
   // Installs hooks that always keep react-router and redux store in sync
   const middleware = [thunk, routerMiddleware(history)];
   let store;
 
   if (isClient && isDebug) {
     middleware.push(createLogger());
-    store = createStore(rootReducer, initialState, compose(
+    store = createStore(rootReducer, compose(
       applyMiddleware(...middleware),
       typeof window === 'object' && typeof window.devToolsExtension !== 'undefined' ? window.devToolsExtension() : f => f
     ));
   } else {
-    store = createStore(rootReducer, initialState, compose(applyMiddleware(...middleware), f => f));
+    store = createStore(rootReducer, compose(applyMiddleware(...middleware), f => f));
   }
 
   if (module.hot) {

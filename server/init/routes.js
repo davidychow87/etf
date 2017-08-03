@@ -9,6 +9,11 @@ const usersController = controllers && controllers.users;
 const topicsController = controllers && controllers.topics;
 
 export default (app) => {
+
+  app.get('/test-route', (req, res) => {
+    res.status(200).send({ result: 'Successful!' })
+  })
+
   // user routes
   if (usersController) {
     app.post('/sessions', usersController.login);
