@@ -24,4 +24,3 @@ module.exports = ({ production = false, browser = false } = {}) => {
     exclude: PATHS.modules
   };
 };
-

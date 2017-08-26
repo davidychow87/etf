@@ -8,11 +8,15 @@ import { controllers, passport as passportConfig } from '../db';
 const usersController = controllers && controllers.users;
 const topicsController = controllers && controllers.topics;
 
+import stocks from '../routes/stocks';
+
 export default (app) => {
 
   app.get('/test-route', (req, res) => {
     res.status(200).send({ result: 'Successful!' })
   })
+
+  stocks(app);
 
   // user routes
   if (usersController) {

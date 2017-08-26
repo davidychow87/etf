@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { Row, Col, Button } from 'react-bootstrap';
 import { testCall } from '../actions/testAction';
+import { getTimeSeriesData } from '../actions/timeSeriesAction';
 import { connect } from 'react-redux';
 
 class Main extends Component {
   handleClick() {
-      this.props.testCall('TestTry');
+      // this.props.testCall('TestTry');
+      this.props.getTimeSeriesData('MSFT');
   };
 
   render() {
@@ -28,4 +30,4 @@ function mapStateToProps({test}) {
   };
 }
 
-export default connect(mapStateToProps, {testCall})(Main);
+export default connect(mapStateToProps, {testCall, getTimeSeriesData })(Main);

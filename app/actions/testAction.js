@@ -19,13 +19,5 @@ export function testCall(call) {
         return dispatch(testCallSuccess(result));
       })
 
-    // return authService().login(data)
-    //   .then((response) => {
-    //       dispatch(loginSuccess('You have been successfully logged in'));
-    //       dispatch(push('/'));
-    //   })
-    //   .catch((err) => {
-    //     dispatch(loginError('Oops! Invalid username or password'));
-    //   });
   };
 }

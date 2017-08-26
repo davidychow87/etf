@@ -8,3 +8,10 @@ export const apiEndpoint = isDebug ? 'http://localhost:3000' : 'https://demo-rea
 // Replace with 'UA-########-#' or similar to enable tracking
 export const trackingID = null;
 
+export const alphaVantageKey = 'W35Q3X2UJWCYLUAN';
+
+export const alphaVantageUrl = 'https://www.alphavantage.co/query';
+
+export const maxPoints = 400;
+
+export const minuteIncrement = 60;

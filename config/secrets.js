@@ -7,4 +7,3 @@ export const google = {
   clientSecret: process.env.GOOGLE_SECRET || '6cKCWD75gHgzCvM4VQyR5_TU',
   callbackURL: process.env.GOOGLE_CALLBACK || '/auth/google/callback'
 };
-
