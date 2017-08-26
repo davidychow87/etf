@@ -70,6 +70,7 @@
     "express-flash": "0.0.2",
     "express-session": "^1.15.2",
     "extract-text-webpack-plugin": "^2.1.0",
+    "fast-csv": "^2.4.0",
     "file-loader": "^0.11.1",
     "helmet": "^3.5.0",
     "json-loader": "^0.5.4",

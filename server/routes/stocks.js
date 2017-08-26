@@ -6,9 +6,10 @@ import Promise from 'bluebird';
 import querystring from 'querystring';
 let request = Promise.promisify(r);
 import moment from 'moment';
-import fs from 'fs';
+import fs from 'fs';      
 import path from 'path';
-
+import stocksMeta from '../db/mongo/models/stocksMeta';
+import csv from 'fast-csv';
 
 function determineInterval(start, end) {
   let timeSeries;
@@ -175,38 +176,7 @@ console.log("URI", uri);
         data['series'] = newSeries;
         delete data['Time Series (Daily)'];
 
-        // let savedData = {};
-        // let data = result[1] ? JSON.parse(result[1]) : {};
-        // let timeSeries = data['Time Series (Daily)'];
-        // // let points = data[intervalMap[interval]];
-        //
-        // let dataArray = [];
-        // let start = moment('2000-01-01', 'YYYY-MM-DD');
-        // let end = moment();
-        //
-        // while (end >= start) {
-        //     let tempObj = {};
-        //
-        //     if (timeSeries[start.format('YYYY-MM-DD')]) {
-        //       tempObj['open'] = timeSeries[start.format('YYYY-MM-DD')]['1. open'];
-        //       tempObj['high'] = timeSeries[start.format('YYYY-MM-DD')]['2. high'];
-        //       tempObj['low'] = timeSeries[start.format('YYYY-MM-DD')]['3. low'];
-        //       tempObj['close'] = timeSeries[start.format('YYYY-MM-DD')]['4. close'];
-        //       tempObj['volume'] = timeSeries[start.format('YYYY-MM-DD')]['5. volume'];
-        //       tempObj['date'] = start.format('YYYY-MM-DD');
-        //
-        //       dataArray.push(tempObj);
-        //     }
-        //
-        //     start.add(1, 'day');
-        // }
-        //
-        // savedData['meta'] = {};
-        // savedData['meta']['symbol'] = req.params.symbol;
-        // savedData['meta']['lastSaved'] = moment().format();
-        // savedData['series'] = dataArray;
 
-        //replaced result[1] with savedData JSON.stringify(savedData, null, 4)
         fs.writeFile(`./temp/${req.params.symbol}.json`, JSON.stringify(data, null, 4), 'utf-8', function(err) {
           if(err) {
             console.log("Err", err);
@@ -220,6 +190,56 @@ console.log("URI", uri);
       });
   });
 
+  // app.get('/stocks/database/post', (req, res) => {
+    
+  //   var stream = fs.createReadStream('./data/nasdaq.csv');
+    
+  //   var csvStream = csv()
+  //       .on('data', function(data) {
+  //           // console.log('Data!', data);
+
+  //           //for amex
+  //           // var symbol = data[0] ? data[0] : null;
+  //           // var name = data[1] ? data[1] : null;
+  //           // var marketCap = data[3];
+  //           // var ipoYear = data[5];
+  //           // var sector = data[6];
+  //           // var industry = data[7];
+
+  //           var symbol = data[0] ? data[0] : null;
+  //           var name = data[1] ? data[1] : null;
+  //           var marketCap = data[3];
+  //           var ipoYear = data[5];
+  //           var sector = data[6];
+  //           var industry = data[7];
+
+    
+  //           var newStock = new stocksMeta({
+  //               name: name,
+  //               symbol: symbol,
+  //               marketCap: marketCap,
+  //               ipoYear: ipoYear,
+  //               sector: sector,
+  //               industry: industry,
+  //             });
+          
+  //             newStock.save((err) => {
+  //               if(err) console.log('err');
+  //               console.log('Saved Data for: ', symbol);
+  //             })
+          
+    
+  //       })
+  //       .on('end', function(data) {
+  //           console.log('end');
+  //           res.send({status: true})
+  //       });
+    
+  //   stream.pipe(csvStream);
+
+    
+
+  // });
 
   //start and end is YYYY-MM-DD
   app.get('/stocks/:symbol/:start/:end', cache, (req, res) => {
