@@ -135,7 +135,7 @@ let monthlyInterval = (data, start, end) => {
 export default function(app) {
 
   //gets (or cache full data)
-  app.get('/stocks/:symbol', cache, (req, res) => {
+  app.get('/stocks/series/:symbol', cache, (req, res) => {
     console.time('reqTime');
 
     let qs = querystring.stringify({
@@ -188,6 +188,15 @@ console.log("URI", uri);
         console.timeEnd('reqTime');
         res.status(200).send({result: result[1]});
       });
+  });
+
+  app.get('/stocks/find/:stock', (req, res) => {
+    let stock = req.params.stock;
+console.log('Looking for stock', stock);
+    stocksMeta.find({ sector: 'Health Care' }, (err, result) => {
+      console.log('RESULT dSS', result);
+    })
+
   });
 
   // app.get('/stocks/database/post', (req, res) => {
@@ -312,8 +321,12 @@ console.log("URI", uri);
       });
   });
 
-  app.get('/balances/test', (req, res) => {
-    console.log("Balances Test")
+  app.get('/stocks/suggestions', (req, res) => {
+    let value = req.query.value.trim().toUpperCase();
+    stocksMeta.find({ symbol: new RegExp(`^${value}`) }, (err, result) => {
+      console.log('RESULTS stock', result);
+    })
+    res.status(200).send({ suggestions: value });
   });
 
 }

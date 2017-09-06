@@ -1,11 +1,11 @@
-import * as types from '../types';
-import ajax from '../../utils/ajax';
+import * as types from '../../types';
+import ajax from '../../../utils/ajax';
 import axios from 'axios';
-import {alphaVantageKey, alphaVantageUrl, maxPoints, minuteIncrement} from '../../config/app';
+import {alphaVantageKey, alphaVantageUrl, maxPoints, minuteIncrement} from '../../../config/app';
 import querystring from 'querystring';
 
 const typeMap = {
-  series: 'TIME_SERIES_DAILY'
+  series: 'TIME_SERIES_DAILY',
 }
 
 function getTimeSeries() {

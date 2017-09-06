@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
-import * as types from '../types';
-import db from '../indexeddb/db';
+import * as types from '../../types';
+import db from '../../indexeddb/db';
 import moment from 'moment';
 
 const initialState = {
@@ -31,17 +31,24 @@ export default function reducer(state = initialState, action = {}) {
         timeSeries[date] = tempObj;
       }
 
-      db.series.add({
+      db.series.update(stock, {
         stock: stock,
         data: timeSeries,
         lastUpdated: moment().format()
       })
-        .then(() => {
-          // console.log('Datum', datum);
+        .then((updated) => {
+          console.log('updated', updated);
+          if (!updated) {
+            return db.series.add({
+              stock: stock,
+              data: timeSeries,
+              lastUpdated: moment().format()
+            })
+          }
           return db.series.where('stock').equals('MSFT').toArray();
         })
         .then(lol => {
-          console.log('here', lol);
+          console.log('here1', lol);
         })
 
 

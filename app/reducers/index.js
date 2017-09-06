@@ -1,7 +1,8 @@
 import { combineReducers } from 'redux';
 import { routerReducer as routing } from 'react-router-redux';
 import test from '../reducers/test';
-import timeSeries from '../reducers/timeSeriesReducer';
+import timeSeries from '../reducers/timeseries/timeSeriesReducer';
+import stockSuggestions from '../reducers/timeseries/stockSuggestionsReducer';
 import * as types from '../types';
 
 const isFetching = (state = false, action) => {
@@ -25,6 +26,7 @@ const rootReducer = combineReducers({
   routing,
   test,
   timeSeries,
+  stockSuggestions
   // message,
   // routing,
 });

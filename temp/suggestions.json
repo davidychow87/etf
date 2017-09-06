@@ -1,0 +1,8 @@
+{
+    "Error Message": "Invalid API call, please visit documentation (https://www.alphavantage.co/documentation/) for function: TIME_SERIES_DAILY",
+    "meta": {
+        "symbol": "suggestions",
+        "lastUpdated": "2017-09-05T23:12:56-07:00"
+    },
+    "series": {}
+}

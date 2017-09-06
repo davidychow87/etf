@@ -93,6 +93,7 @@
     "querystring": "^0.2.0",
     "react": "^15.5.3",
     "react-addons-test-utils": "^15.5.0",
+    "react-autosuggest": "^9.3.2",
     "react-bootstrap": "^0.31.1",
     "react-dom": "^15.5.3",
     "react-helmet": "^5.0.2",
