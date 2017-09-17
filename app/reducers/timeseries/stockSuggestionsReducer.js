@@ -4,11 +4,12 @@ import db from '../../indexeddb/db';
 import moment from 'moment';
 
 const initialState = {
-    suggestions: ['test'],
+    suggestions: [],
 
 }
 
 export default function reducer(state = initialState, action = {}) {
+
     switch(action.type) {
         case types.GET_SUGGESTIONS:
             return {
@@ -16,14 +17,29 @@ export default function reducer(state = initialState, action = {}) {
             };
 
         case types.GET_SUGGESTIONS_SUCCESS:
-            console.log('GET SUGGESTIONS SUCCESS', action.suggestions)
+            const tempSuggestions = [];
+       
+            action.suggestions.suggestions.forEach(suggestion => {
+                let obj = {
+                    value: suggestion.symbol,
+                    suggestion: `${suggestion.symbol} - ${suggestion.name}`,
+                }
+                tempSuggestions.push(obj);
+            });
+
             return {
                 ...state,
-                suggestions: action.suggestions,
+                suggestions: tempSuggestions,
             };
 
         case types.GET_SUGGESTIONS_FAIL:
             console.log('Get Suggestions Fail', action.error);
+            return {
+                ...state,
+                suggestions: [],
+            }
+
+        case types.CLEAR_SUGGESTIONS:
             return {
                 ...state,
                 suggestions: [],

@@ -2,14 +2,22 @@ import React, { Component } from 'react';
 import { Row, Col, Button } from 'react-bootstrap';
 import { testCall } from '../actions/testAction';
 import { getTimeSeriesData } from '../actions/timeseries/timeSeriesAction';
-import { fetchSuggestions } from '../actions/timeseries/stockSuggestionsActions';
+import { fetchSuggestions, clearSuggestions } from '../actions/timeseries/stockSuggestionsActions';
 import { connect } from 'react-redux';
 import AutoCompleteInput from '../components/inputs/AutoCompleteInput';
+import classNames from 'classnames/bind';
+import style from 'css/components/autosuggest';
+import _ from 'lodash';
+import LineChart from '../components/graphs/LineChart';
 
+const cx = classNames.bind(style);
 class Main extends Component {
+  state = {
+    value: '',
+  }
+
   handleClick() {
-      // this.props.getTimeSeriesData('MSFT', 'series');
-      this.props.fetchSuggestions('MS');
+      this.props.getTimeSeriesData(this.state.value);
   };
 
   onSuggestionsFetchRequested = ({ value }) => {
@@ -20,33 +28,60 @@ class Main extends Component {
       this.props.clearSuggestions();
   }
 
+  getSuggestionValue = (suggestion) => {
+    return suggestion.value;
+  };
+
+  onChange = (value) => {
+    this.setState({
+      value: value.toUpperCase(),
+    })
+  };
+
   render() {
-    console.log('stock suggestions!!', this.props.suggestions);
+    console.log('Main getting', this.props.gettingSeries)
     return (
       <Row>
-        <Col xs={1}>
-          {/* <AutoCompleteInput 
-            suggestions={this.props.suggestions}
-            placeHolder="e.g. MSFT"
-            onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-            onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-            suggestionValue="stock"
-          /> */}
-
-          <Button bsStyle="primary" onClick={() => this.handleClick()} bsSize="xs" block>
+        
+        <Col xs={3} style={styles.column}>
+          <div>
+          <Button disabled={this.state.invalid} bsStyle="primary" onClick={() => this.handleClick()} bsSize="xs" >
             Click Here
           </Button>
+          <AutoCompleteInput 
+            suggestions={this.props.suggestions}
+            placeholder="e.g. MSFT"
+            onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+            onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+            getSuggestionValue={this.getSuggestionValue}
+            onChange={this.onChange}
+          />
+          {this.state.invalid &&
+            <span>Invalid Stock</span>
+          }
+            <LineChart/>
+          <span>test</span>
+          </div>
+     
         </Col>
+    
       </Row>
 
     )
   };
 }
 
+const styles = {
+  column: {
+    margin: "10px"
+  }
+}
+
 function mapStateToProps(state) {
   return {
     suggestions: state.stockSuggestions.suggestions,
+    gettingSeries: state.timeSeries.gettingSeries,
   };
 }
 
-export default connect(mapStateToProps, {testCall, getTimeSeriesData, fetchSuggestions })(Main);
+export default connect(mapStateToProps, {testCall, getTimeSeriesData, fetchSuggestions, clearSuggestions })(Main);

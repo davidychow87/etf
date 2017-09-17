@@ -15,6 +15,10 @@ function fetchSuggestionsFail(error) {
     return { type: types.GET_SUGGESTIONS_FAIL, error }
 }
 
+export function clearSuggestions() {
+    return { type: types.CLEAR_SUGGESTIONS }
+}
+
 export function fetchSuggestions(value) {
     return(dispatch) => {
         dispatch(getSuggestionsStart());
@@ -25,7 +29,6 @@ export function fetchSuggestions(value) {
 
         return ajax.get(`/stocks/suggestions?${qs}`, {})
         .then((suggestions) => {
-          console.log("Suggestions", suggestions);
           return dispatch(fetchSuggestionsSuccess(suggestions));
         })
         .catch(err => {
@@ -34,3 +37,4 @@ export function fetchSuggestions(value) {
         })
     }
 }
+

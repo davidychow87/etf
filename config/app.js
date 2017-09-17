@@ -12,6 +12,6 @@ export const alphaVantageKey = 'W35Q3X2UJWCYLUAN';
 
 export const alphaVantageUrl = 'https://www.alphavantage.co/query';
 
-export const maxPoints = 400;
+export const maxPoints = 200;
 
 export const minuteIncrement = 60;

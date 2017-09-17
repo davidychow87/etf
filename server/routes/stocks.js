@@ -324,9 +324,8 @@ console.log("URI", uri);
   app.get('/stocks/suggestions', (req, res) => {
     let value = req.query.value.trim().toUpperCase();
     stocksMeta.find({ symbol: new RegExp(`^${value}`) }, (err, result) => {
-      console.log('RESULTS stock', result);
+        res.status(200).send({ suggestions: result });
     })
-    res.status(200).send({ suggestions: value });
   });
 
 }

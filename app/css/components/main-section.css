@@ -2,7 +2,7 @@
 @import '../common/typography';
 @import '../common/card';
 
-.main-section {
+/* .main-section {
   @apply --card;
   width: 50%;
   border-radius: var(--globalRadius);
@@ -18,5 +18,5 @@
 .list {
   list-style: none;
   padding: 16px;
-}
+} */
 

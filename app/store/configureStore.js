@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import { routerMiddleware } from 'react-router-redux';
 import thunk from 'redux-thunk';
-import { createLogger } from 'redux-logger';
+// import { createLogger } from 'redux-logger';
 import rootReducer from '../reducers';
 import { isClient, isDebug } from '../../config/app';
 
@@ -17,7 +17,7 @@ export default function configureStore(history) {
   let store;
 
   if (isClient && isDebug) {
-    middleware.push(createLogger());
+    // middleware.push(createLogger());
     store = createStore(rootReducer, compose(
       applyMiddleware(...middleware),
       typeof window === 'object' && typeof window.devToolsExtension !== 'undefined' ? window.devToolsExtension() : f => f
