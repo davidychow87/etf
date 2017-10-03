@@ -3,10 +3,11 @@ import * as types from '../../types';
 import db from '../../indexeddb/db';
 import moment from 'moment';
 import { maxPoints } from '../../../config/app';
+import Promise from 'bluebird'
 
 const initialState = {
   gettingSeries: false,
-  series: [],
+  series: {  },
 }
 
 function previousAvailableDate(date) {
@@ -18,80 +19,55 @@ function previousAvailableDate(date) {
 }
 
 function nextAvailableDate(date) {
+  let today = moment().format("YYYY-MM-DD");
+
   if(this[date]) {
-    console.log('RETURNING DATfE', date);
     return date;
   }
+
+  if (moment(date) >= moment(today)) {
+    return null;
+  }
+
   //add a day
   let nextDate = moment(date, 'YYYY-MM-DD').add(1, 'day').format('YYYY-MM-DD');
   return nextAvailableDate.bind(this)(nextDate);
 }
 
-function seriesArray(series, seriesType) {
-  //only 5 out of 7 days a week (on avg)
-  let adjustedMax = Math.round(1.45*maxPoints);
-  console.log('AdustedMax', adjustedMax)
-  let data = series.data;
+function getInterval(range) {
+  console.log('Range is', range);
+  if (range >= 3650) return { interval: 'months', add: 1, startOf: 'month'};
+
+  if (2555 <= range && range < 3650) return { interval: 'weeks', add: 2, startOf: 'week'};  
+
+  if ((1095 <= range && range < 2555)) return { interval: 'weeks', add: 1, startOf: 'week'};
+
+  if (range < 1095) return { interval: 'days', add: 1, startOf: 'day'};
+
+  return { interval: 'weeks', add: 1, startOf: 'week'};
+}
+
+// //pass just data not series
+function toSeriesArray(data, start, end) {
   let today = moment().format("YYYY-MM-DD");
-  let firstDate = moment(today).subtract(880, 'days').format("YYYY-MM-DD");
-  // let firstDate = nextAvailableDate.bind(data)("1999-12-28");
-  let diffDays = moment(today).diff(moment(firstDate), 'days');
-  let daysPerPoint = Math.ceil(diffDays/adjustedMax);
-  let remainder = Math.round((diffDays % adjustedMax));
-  // let remainder = Math.round(maxPoints - ((diffDays/1.45)/daysPerPoint));
-  let skipDays = Math.round(maxPoints/remainder); //+1 day every skipdays
-  let day = firstDate;
+  let startDate = start ? nextAvailableDate.bind(data)(start) : nextAvailableDate.bind(data)("1999-12-28");
+  let endDate = end ? previousAvailableDate.bind(data)(end) : previousAvailableDate.bind(data)(today);
+  let range = moment(endDate).diff(moment(startDate), 'days');
+  let interval = getInterval(range);
+  let day = startDate;
   let dataArray = [];
-  console.log('FirstDay', firstDate);
-  console.log('today', today);
-  console.log('diffdays', diffDays);
-  console.log('dajMax', adjustedMax);
-  console.log('remainder', remainder);
-  console.log('DaysPerPoint', daysPerPoint);
-  console.log('Skip', skipDays);
-  console.log('DAYS Differe', diffDays);
-  console.log('DATA', data);
-  let count = 0;
-  //get list of days
-  while (moment(day) <= moment(today)) {
-    let daysToSkip = daysPerPoint;
-    // if (count === skipDays) {
-    //   daysToSkip--;
-    //   count = 0;
-    // }
-    // console.log('DaysToSkip', daysToSkip);
-  
+ 
+  while (moment(day) < moment(endDate)) {
     if (data[day]) {
       let obj = { ...data[day] };
       obj.date = day;
       dataArray.push(obj);
     }
-    count++;
-    day = moment(day).add(daysToSkip, 'day').format('YYYY-MM-DD');
+    // day =  moment(day).add(interval.add, interval.interval).startOf(interval.startOf).format('YYYY-MM-DD');
+    day = nextAvailableDate.bind(data)(moment(day).add(interval.add, interval.interval).startOf(interval.startOf).format('YYYY-MM-DD'));
   }
-  console.log('Prev dataArray length', dataArray.length);
-  let lastDay = dataArray[dataArray.length-1].date;
-  
-  //if not last daty, add to dataArray
-  if(lastDay !== today) {
-    if (data[today]) {
-      console.log('Adding today', lastDay, today);
-      let obj = { ...data[today] };
-      obj.date = today;
-      dataArray.push(obj);
-    } else {
-      let previousDate = previousAvailableDate.bind(data)(today);
-      let obj = { ...data[previousDate] };
-      obj.date = previousDate;
-      dataArray.push(obj);
-    }
-  }
-
-
-  console.log('dateArray', dataArray.length);
-  console.log('realArray', dataArray);
-
-
+  console.log('Lenth of data', dataArray.length, "start", startDate);
+  return dataArray;
 }
 
 export default function reducer(state = initialState, action = {}) {
@@ -142,10 +118,17 @@ export default function reducer(state = initialState, action = {}) {
           }
         })
         .then(series => {
-          seriesArray(series[0], seriesType);
+          // console.time('series');
+          let formattedSeriesData = toSeriesArray(series[0].data);
+          // console.timeEnd('series');
+          // console.log('stateSeries', state.series);
+          let tempSeries = { ...state.series };
+          tempSeries[stock] = formattedSeriesData;
+          console.log('seriestemp', tempSeries);
           return {
             ...state,
             gettingSeries: false,
+            series: tempSeries,
           };
         })
         .catch(err => {

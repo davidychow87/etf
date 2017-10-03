@@ -39,7 +39,7 @@ class Main extends Component {
   };
 
   render() {
-    console.log('Main getting', this.props.gettingSeries)
+    console.log('Series is', this.props.series);
     return (
       <Row>
         
@@ -81,6 +81,7 @@ function mapStateToProps(state) {
   return {
     suggestions: state.stockSuggestions.suggestions,
     gettingSeries: state.timeSeries.gettingSeries,
+    series: state.timeSeries.series,
   };
 }
 
