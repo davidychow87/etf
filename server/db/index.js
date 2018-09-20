@@ -2,7 +2,7 @@ import { DB_TYPE } from '../../config/env';
 import { DB_TYPES } from '../../config/dbTypes';
 
 let dbConfig = null;
-
+console.log('DB____', DB_TYPE);
 /* use inline requires for conditional loading */
 switch (DB_TYPE) {
   case DB_TYPES.MONGO:

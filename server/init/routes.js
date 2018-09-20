@@ -10,11 +10,32 @@ const topicsController = controllers && controllers.topics;
 
 import stocks from '../routes/stocks';
 
+function sanitizeOutput(req, res, next) {
+  console.log('here in sanitize!');
+  let send = res.send;
+
+  res.send = function(data) {
+
+    console.log('types of Args are!', typeof arguments[0]);
+    if (typeof arguments[0] === 'object') {
+      arguments[0].newObj = 'test';
+    }
+    console.log('Args are!', arguments[0]);
+    
+    return send.apply(res, arguments);
+  }
+
+  next();
+}
+
 export default (app) => {
 
   app.get('/test-route', (req, res) => {
     res.status(200).send({ result: 'Successful!' })
-  })
+  });
+
+
+  // app.use(sanitizeOutput);
 
   stocks(app);
 

@@ -199,56 +199,66 @@ console.log('Looking for stock', stock);
 
   });
 
-  // app.get('/stocks/database/post', (req, res) => {
-    
-  //   var stream = fs.createReadStream('./data/nasdaq.csv');
-    
-  //   var csvStream = csv()
-  //       .on('data', function(data) {
-  //           // console.log('Data!', data);
+  app.post('/stocks/test/route', (req, res) => {
+    // console.log('in route', res.send);
+    console.log('body is', req.body);
+    res.status(200).send([1,2,3]);
+  })
 
-  //           //for amex
-  //           // var symbol = data[0] ? data[0] : null;
-  //           // var name = data[1] ? data[1] : null;
-  //           // var marketCap = data[3];
-  //           // var ipoYear = data[5];
-  //           // var sector = data[6];
-  //           // var industry = data[7];
+  app.get('/stocks/database/post', (req, res) => {
+    //nasdaq, nyse
+    var stream = fs.createReadStream('./data/amex.csv');
+    let count = 0;
+    var csvStream = csv()
+        .on('data', function(data) {
+            // console.log('Data!', data);
 
-  //           var symbol = data[0] ? data[0] : null;
-  //           var name = data[1] ? data[1] : null;
-  //           var marketCap = data[3];
-  //           var ipoYear = data[5];
-  //           var sector = data[6];
-  //           var industry = data[7];
+            //for amex
+            var symbol = data[0] ? data[0] : null;
+            var name = data[1] ? data[1] : null;
+            var marketCap = data[3];
+            var ipoYear = data[5];
+            var sector = data[6];
+            var industry = data[7];
 
-    
-  //           var newStock = new stocksMeta({
-  //               name: name,
-  //               symbol: symbol,
-  //               marketCap: marketCap,
-  //               ipoYear: ipoYear,
-  //               sector: sector,
-  //               industry: industry,
-  //             });
+            // var symbol = data[0] ? data[0] : null;
+            // var name = data[1] ? data[1] : null;
+            // var marketCap = data[3];
+            // var ipoYear = data[5];
+            // var sector = data[6];
+            // var industry = data[7];
+
+            if (symbol !== 'Symbol') {
+              var newStock = new stocksMeta({
+                name: name,
+                symbol: symbol,
+                marketCap: marketCap,
+                ipoYear: ipoYear,
+                sector: sector,
+                industry: industry,
+              });
           
-  //             newStock.save((err) => {
-  //               if(err) console.log('err');
-  //               console.log('Saved Data for: ', symbol);
-  //             })
-          
+              newStock.save((err) => {
+                if(err) console.log('err');
+                console.log('Saved Data for', count, symbol);
+              });
+              count++;
+            }
+        })
+        .on('end', function(data) {
+            console.log('end');
+            setTimeout(() => {
+              console.log('ending');
+              return res.status(200).send({status: true});
+            }, 2000)
+            
+        });
     
-  //       })
-  //       .on('end', function(data) {
-  //           console.log('end');
-  //           res.send({status: true})
-  //       });
-    
-  //   stream.pipe(csvStream);
+    stream.pipe(csvStream);
 
     
 
-  // });
+  });
 
   //start and end is YYYY-MM-DD
   app.get('/stocks/:symbol/:start/:end', cache, (req, res) => {

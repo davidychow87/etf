@@ -45,6 +45,24 @@ export default function reducer(state = initialState, action = {}) {
                 suggestions: [],
             }
 
+        case types.DOWNLOAD:
+            console.log('STARTING DL');
+            return {
+                ...state,
+            }
+
+        case types.DOWNLOAD_SUCCESS:
+            console.log('DL SUCCESS');
+            return {
+                ...state,
+            }
+
+        case types.DOWNLOAD_FAIL:
+            console.log('DL FAIL');
+            return {
+                ...state,
+            }
+
         default:
             return state;
     }

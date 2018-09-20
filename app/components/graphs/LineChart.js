@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 
 export default class LineChart extends Component {
   static propTypes = {
-    data: PropTypes.array.isRequired,
+    // data: PropTypes.array.isRequired,
   }
 
 
@@ -32,30 +32,52 @@ export default class LineChart extends Component {
     // data.forEach()
 
     var margin = { top: 50, right: 50, bottom: 50, left: 50 }
-    // var width = this.props.width, height = this.props.height;
-    var width = 300; var height = 300;
+    var width = this.props.width, height = this.props.height;
+    console.log('Width is', width, 'height is', height);
+    // var width = 300; var height = 300;
     var xScale = d3.scaleLinear().range([margin.left, width-margin.right]).domain([0, 10]);
-    var yScale = d3.scaleLinear().range([height-margin.top, margin.bottom]);
+    var yScale = d3.scaleLinear().range([height-margin.top, margin.bottom]).domain([0, 20]);
     var xAxis = d3.axisBottom(xScale);
-    // var yAxis = d3.svg.axis().scale(yScale);
-    
+    var yAxis = d3.axisLeft(yScale);
 
+
+   
     var svg = d3.select(node)
       .append('g')
-      .attr('transform', 'translate('+ margin.left + ',' + margin.top + ')');
+      // .attr('transform', `translate(${margin.left}, ${margin.top})`)
+    
 
-    svg.append('svg:g')
-      // .attr('class', 'x axis')
-      // .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
+    svg.append('g')
+      .attr('transform', `translate(0, ${height - margin.bottom})`)
       .call(xAxis);
+    
+    svg.append('svg:g')
+      .attr('transform', `translate(${margin.right}, 0)`)
+      .call(yAxis);
+
+    var bordercolor = 'black';
+    var border = 1;
+    var borderPath = svg.append("rect")
+      .attr("x", 0)
+      .attr("y", 0)
+      .attr("height", height)
+      .attr("width", width)
+      .style("stroke", bordercolor)
+      .style("fill", "none")
+      .style("stroke-width", border);
+  
 
 
   }
 
   render() {
+    // console.log('with', this.props.width, 'ehgith', this.props.height);
+    const { height, width } = this.props;
     return (<svg 
-            ref={node => this.node = node} 
-            width={500} height={500}>
+              ref={node => this.node = node} 
+              width={width} height={height}
+              style={{margin: '10px'}}
+            >
             </svg>);
   }
 
